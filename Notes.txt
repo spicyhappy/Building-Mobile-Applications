@@ -1,0 +1,14 @@
+
+# Building Mobile Applications
+
+## June 26, 2013
+
+- Size of webpage correctly on mobile: `<meta name="viewport" content="width=device-width"/>`
+- [Download XAMPP](http://www.apachefriends.org/en/xampp-macosx.html)
+- Frameworks: jQuery Mobile, PhoneGap, Sencha Touch
+- Used iOS Simulator from Xcode to see issues with using Frameworks. Ex. Briefly load the url.
+- data-foo: make up your own attributes, validates correctly
+- Mobile web app capable: `<meta name="apple-mobile-web-app-capable" content="yes"/>`
+- Precomposed icon, no added gloss: '<link rel="apple-touch-icon-precomposed" href="custom_icon.png"/>'
+- Startup image: '<link rel="apple-touch-startup-image" href="startup.png"/>'
+- iOS developer license
