@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<!-- We expand on exercise 1 (NOT exercise 3), where now we append to the div the textbox's
+     current contents instead of replacing all of the contents, and also use localStorage
+     to remember the contents of the div so that it's still there when we refresh the page -->
+
+<html>
+    <head>
+        <title>Exercise 4!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</title>
+        <meta charset="UTF-8">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>
+            $(document).on('ready', function() {
+
+
+                // We need this check in case we are in an older browser, in which case localStorage
+                // wouldn't be defined.
+                if (typeof localStorage !== 'undefined') {
+
+                    // If this is the first time we are loading the page (or we've never entered text into the div
+                    // before), we shouldn't try to insert localStorage.divtext (we could call it whatever we
+                    // want) into the page, since its contents won't yet be defined.
+                    if (typeof localStorage.divtext !== 'undefined') {
+                        // The localStorage variable already exists, so insert its contents into
+                        // the div. Notice we use html(), so that the <br> tags are preserved.
+                        // What problems might this cause? Think about what would happen if
+                        // we insert html into the text box. How could we prevent this?
+                        //
+                        // Also notice that this line is inside the "document-ready" event handler,
+                        // so the element with id exercise4-div definitely already exists.
+                        $("#exercise4-div").html(localStorage.divtext);
+                    }
+                }
+
+                $("#exercise4-form").on('submit', function() {
+
+                     var textbox = $("#exercise4-text").val();
+
+                     // We change this from exercise 1 to use append() instead of text(), so we append to
+                     // the div instead of replacing the contents.
+                     $("#exercise4-div").append(textbox + '<br>')
+
+                     // Grab *all* of the contents, including the html tags, inside of the div. Notice we
+                     // use html() instead of text().
+                     var alltext = $("#exercise4-div").html();
+
+                     // Store the stuff from the div inside of localStorage.divtext, so we can access it after
+                     // a page refresh.
+                     localStorage.divtext = alltext;
+
+                     // Prevent the form from submitting.
+                     return false;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <form id="exercise4-form">
+            <input type="text" id="exercise4-text">
+            <input type="submit">
+        </form>
+        <div id="exercise4-div" style="border:1px solid red">
+        </div>
+    </body>
+</html>

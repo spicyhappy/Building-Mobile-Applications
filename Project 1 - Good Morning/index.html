@@ -1,0 +1,72 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="description" content="Good Day is a web app that lets you look at weather and local news at a glance.">
+	<meta author="author" content="Xin Xin">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	<title>Good Day</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<link rel="stylesheet" href="main.css">
+	<link rel="apple-touch-icon-precomposed" href="img/apple-icon.png" />
+	<link rel="apple-touch-startup-image" href="img/apple-startup.png" />
+	<link rel="shortcut icon" href="img/favicon.ico">
+</head>
+<body>
+	<header>
+		<form>
+            <input type="search" id="locationSearch" placeholder="City + State or Zip">
+            <input type="submit" value="Search">
+        </form>
+        <div class="shortcuts hide">
+        	<ul id="historyList">
+        		<li>Boston, MA</li>
+        		<li>New York, NY</li>
+        		<li>Los Angeles, CA</li>
+        		<li>Chicago, IL</li>
+        		<li>Houston, TX</li>
+        	</ul>
+        	<a class="close">Close</a>
+        </div>
+	</header>
+
+	<section class="weather">
+		<div id="weatherCurrent">
+			<span class="message">Hello! Use Good Day to look up your local news and weather.</span><span class="sky"></span><span class="temperature"></span>
+		</div>
+		<ol id="weatherFuture">
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ol>
+		</div>
+	</section>
+
+	<section class="news">
+		<article id="article1"></article>
+		<article id="article2"></article>
+		<article id="article3"></article>
+		<article id="article4"></article>
+		<article id="article5"></article>
+		<article id="article6"></article>
+		<article id="article7"></article>
+		<article id="article8"></article>
+		<article id="article9"></article>
+		<article id="article10"></article>
+		<article id="article11"></article>
+		<article id="article12"></article>
+		<article id="article13"></article>
+		<article id="article14"></article>
+	</section>
+
+	<footer><a href="http://xin-squared.com">Made by Xin Xin</a></footer>
+	<script type="text/javascript" src="main.js"></script>
+</body>
+</html>

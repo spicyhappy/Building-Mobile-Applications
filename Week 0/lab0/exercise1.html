@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<!-- In this exercise, we have a textbox in a form that, when submitted, inserts the
+     text in the textbox into a div -->
+
+<html>
+    <head>
+        <title>Exercise 1!!!!!!</title>
+        <meta charset="UTF-8">
+
+        <!-- Include jquery (link to Google's hosted version so we don't have to download locally -->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+        <!-- Remember that you can extract this javascript into a separate .js file. You will
+             probably want to do that for the first project, since it's cleaner -->
+        <script>
+            // Remember that the dollar sign almost always means something jquery-related.
+            // Here, we are saying that the function we are passing as the second argument
+            // should be run as soon as the "ready" event is triggered on the whole document.
+            // The ready event is triggered as soon as the page finishes loading completely.
+            //
+            // The next comment explains *why* we need to do wait until the page finishes
+            // loading before doing everything else.
+
+            $(document).on('ready', function() {
+
+                // Here, we are binding a function to the "submit" event on the element with id
+                // exercise1-form. The submit event is triggered when you try to submit that
+                // form. The bound function is run when the submit event is triggered.
+                // Here, like with the document-ready event handler above, we used an anonymous
+                // function as the second argument, but note that you could also define a completely
+                // separate function and pass it to the "on" function by name.
+                //
+                // So why did we need to wait for the document to be ready before executing this line
+                // of code? If we didn't wait, then at this point in time the form with id "exercise1-form"
+                // wouldn't have been loaded yet, and so we wouldn't be able to bind this anonymous
+                // function to the non-existant form's submit event.
+                $("#exercise1-form").on('submit', function() {
+
+                    // Here, we select the element with the id "exercise1-text", which is our text input
+                    // box, and get the text that's currently inside it using the val() function (see the
+                    // jquery documentation). If instead of getting the contents of the text box, you wanted
+                    // to *set* the contents, you would pass an argument to val(). For example,
+                    // $("#exercise1-text").val("");
+                    // would remove all text from the text box.
+                    //
+                    // Note that if I didn't say "var" here, we would be declaring the variable textbox
+                    // as a global variable, which is generally bad style.
+                    var textbox = $("#exercise1-text").val();
+
+                    // Here is an alternative of the above line, using pure javascript (e.g., no jquery):
+                    // var textbox = document.getElementById('exercise1-text').value;
+
+                    // Here, we grab the element with id "exercise1-div", and set the text inside it
+                    // to what is currently inside of the "textbox" variable. A similar function to the
+                    // text() function is the html() function -- check the jquery documentation to be
+                    // sure you understand the differences (and the consequences of using html());.
+                    //
+                    // Here, we are setting the text contents of the div using the text() function. But,
+                    // like the val() function, if instead we wanted to *get* the text contents, we would
+                    // call text() without any arguments.
+                    $("#exercise1-div").text(textbox);
+
+                    // We need to return false in order to prevent the default behavior of the "submit"
+                    // event on a form, which is, of course, actually submitting the form. If we didn't
+                    // return false, you would see the page refresh.
+                    return false;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <form id="exercise1-form">
+            <input type="text" id="exercise1-text">
+            <input type="submit">
+        </form>
+        <!-- We in-lined the CSS here, but for your project note that inline CSS is generally bad style! -->
+        <div id="exercise1-div" style="border:1px solid red">
+            Div!!
+        </div>
+    </body>
+</html>

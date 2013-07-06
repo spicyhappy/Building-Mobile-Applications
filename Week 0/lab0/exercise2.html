@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+
+<!-- We expand on exercise 1, where now the textbox should take a zip code, and we
+     insert into the div the city and state corresponding to that zip code -->
+
+<html>
+    <head>
+        <title>Exercise 2!!!!!!!!!!!</title>
+        <meta charset="UTF-8">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>
+            $(document).on('ready', function() {
+                $("#exercise2-form").on('submit', function() {
+
+                     // We don't validate that this is a zipcode, but it might be a good idea to do so.
+                     var zipcode = $("#zipcode").val();
+
+                     // Everything above this point, save some name changes, is the same as
+                     // in exercise1.html.
+
+                     // Here, we construct the appropriate URL for our geocoding request to Google's API.
+                     // Remember that we can use "+" to concatenate variables, such as zipcode, to strings.
+                     var url = "http://maps.googleapis.com/maps/api/geocode/json?address=" + zipcode + "&sensor=true";
+
+                     // Check the jquery documentation for how the getJSON() function works. Remember that it
+                     // just uses the ajax() function underneath the hood, and jquery just provides this
+                     // function as a convenience.
+                     //
+                     // The first argument is the url we want to grab the JSON from, and the second is a function whose
+                     // first argument is the returned JSON. Be sure to understand this asynchronous aspect of getJSON
+                     // (and AJAX in general).
+                     //
+                     // Also remember to handle all possible errors in your projects! Are we handling all of them
+                     // here?
+                     $.getJSON(url, function(data) {
+
+                        // From the Google geocoding documentation, we see that data.status might indicate that
+                        // something went wrong. Why might zero results be returned by Google?
+                        if (data.status === "ZERO_RESULTS") {
+                            alert('uh oh');
+                            return;
+                        }
+
+                        // Each element in "components" is an object representing a specific "area level",
+                        // e.g., "Cambridge", "Massachusetts", "USA", etc.
+                        var components = data.results[0].address_components;
+
+                        // Iterate over these address components, looking for the components representing
+                        // city and state.
+                        for (var i = 0; i < components.length; i++) {
+
+                            // If the "types" array contains "locality", we know that this address
+                            // component represents the city. indexOf only returns -1 if the given
+                            // argument can't be found in the array.
+                            if (components[i].types.indexOf("locality") !== -1) {
+                                var city = components[i].long_name;
+                            }
+
+                            // If the "types" array contains "administrative_area_level_1", we know
+                            // that this address component represents the city.
+                            else if (components[i].types.indexOf("administrative_area_level_1") !== -1) {
+                                var state = components[i].short_name;
+                            }
+                        }
+
+                        // Remember that the "typeof foo === 'undefined'" pattern is a way of checking to
+                        // see if variable foo hasn't been defined.
+                        //
+                        // Here, if city or state is undefined, then we didn't find them in the for loop
+                        // above, and so can't print them as desired.
+                        if (typeof city === 'undefined' || typeof state === 'undefined') {
+                            alert('uh oh');
+                            return;
+                        }
+
+                         // Insert the city and state into the div with id "city-state"
+                         // Again, we use "+" to concatenate the variables.
+                         $("#city-state").text(city + ', ' + state);
+
+                     });
+
+                     // As in the previous exercise, prevent the form from actually submitting.
+                     // Notice this is *outside* the anonymous function passed to getJSON.
+                     return false;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <form id="exercise2-form">
+            <input type="text" id="zipcode">
+            <input type="submit">
+        </form>
+        <div id="city-state" style="border:1px solid red">
+        </div>
+    </body>
+</html>

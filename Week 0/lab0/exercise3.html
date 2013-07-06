@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<!-- We expand on exercise 2, where now we just use the user's current location instead
+     of asking for the zip code, and insert into the div the city and state corresponding to
+     the user's current location -->
+
+<html>
+    <head>
+        <title>Exercise 3!!!!!!!!!!!!!!!!</title>
+        <meta charset="UTF-8">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+        <script>
+            $(document).on('ready', function() {
+
+                // Everything above this point is the same as in the prior exercises.
+
+                // Notice here we've changed the event to which we're binding from "submit" to "click". Why's that?
+                // We are no longer using a form (which you *submit*), but now a button (which you *click*). See
+                // the HTML below to see that the element with id "geolocate-button" is in fact a button.
+                $("#geolocate-button").on('click', function() {
+
+                    // Use geolocation to grab the user's current location. This position object is passed as an
+                    // argument to the anonymous function passed to getCurrentPosition.
+                	//
+                	// Note that older browsers won't have a "navigator" object available. What can you do to prevent
+                	// this causing an error?
+                	//
+                	// Also, look at the documentation for navigator.geolocation.getCurrentPosition, and see that it
+                	// takes an optional second argument for handling error conditions. When might errors arise? You
+                	// will probably want to handle those errors in your project!
+                    navigator.geolocation.getCurrentPosition(function(position) {
+                        var lat = position.coords.latitude;
+                        var lng = position.coords.longitude;
+
+                        // Notice that, compared to the previous exercise, the URL has now changed such that the get
+                        // parameter is called "latlng" instead of "address", as per the Google geocoding API's
+                        // documentation.
+                        var url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + ',' + lng + "&sensor=true";
+
+                        // All javascript below this point is identical to the previous exercise.
+                        $.getJSON(url, function(data) {
+
+                           if (data.status === "ZERO_RESULTS") {
+                               alert('uh oh');
+                               return;
+                           }
+                           var components = data.results[0].address_components;
+
+                           for (var i = 0; i < components.length; i++) {
+                               var comp = components[i];
+
+                               if (comp.types.indexOf("locality") !== -1) {
+                                   var city = comp.long_name;
+                               }
+                               else if (comp.types.indexOf("administrative_area_level_1") !== -1) {
+                                   var state = comp.short_name;
+                               }
+                           }
+
+                           if (typeof city === 'undefined' || typeof state === 'undefined') {
+                               alert('uh oh');
+                               return;
+                           }
+
+                            $("#city-state").text(city + ', ' + state);
+
+                        });
+                    });
+
+                    // As always, prevent the form from actually submitting.
+                    return false;
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <button id="geolocate-button">Use current location!</button>
+        <div id="city-state" style="border:1px solid red">
+        </div>
+    </body>
+</html>

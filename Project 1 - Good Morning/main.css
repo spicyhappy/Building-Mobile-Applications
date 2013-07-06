@@ -1,0 +1,137 @@
+/* CSS reset */
+html, body, div, span, h1, h2, p, a, img, ul, ol, li, form, label, article, footer, header, section {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+body {
+	background-color: rgb(237,28,36);
+	color: #FFFFFF;
+	line-height: 1.2;
+	font-family: “Helvetica Neue”, Arial, sans-serif;
+	font-weight: bold;
+	font-size: 0.875em;
+	text-shadow: 0 2px 2px rgba(0,0,0,0.2);
+}
+
+header form, #weatherCurrent, .news article, footer {
+	padding: 2.5%;
+}
+
+a, a:visited {
+	text-decoration: none;
+	color: #FFFFFF;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+button, input {
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+}
+
+ol, ul {
+	list-style: none;
+}
+
+header {
+	background-color: rgb(255,221,85);
+}
+
+header h1{
+	font-size: 1.5em;
+	display: inline-block;
+}
+
+#historyList li, .shortcuts a {
+	padding: 1% 2.5%;
+	background-color: rgb(237,28,36);
+	display: block;
+}
+
+.hide {
+	display: none;
+}
+
+#weatherCurrent {
+	background-color: rgba(255,221,85,.9);
+}
+
+#weatherFuture {
+	background-color: rgba(255,221,85,.8);
+	clear: both;
+	overflow: auto;
+	width: 100%;
+}
+
+#weatherFuture li {
+/*	background-color: rgba(255,221,85,.8);*/
+	font-size: 0.75em;
+	text-align: center;
+	display: inline-block;
+	float: left;
+	width: 14.2857%;
+	padding: 2.5% 0;
+	box-sizing: border-box; -webkit-box-sizing: border-box;
+}
+
+#article1 {
+	background-color: rgba(255,221,85,.7);
+}
+#article2 {
+	background-color: rgba(255,221,85,.65);
+}
+
+#article3 {
+	background-color: rgba(255,221,85,.6);
+}
+
+#article4 {
+	background-color: rgba(255,221,85,.55);
+}
+
+#article5 {
+	background-color: rgba(255,221,85,.5);
+}
+
+#article6 {
+	background-color: rgba(255,221,85,.45);
+}
+
+#article7 {
+	background-color: rgba(255,221,85,.4);
+}
+
+#article8 {
+	background-color: rgba(255,221,85,.35);
+}
+
+#article9 {
+	background-color: rgba(255,221,85,.3);
+}
+
+#article10  {
+	background-color: rgba(255,221,85,.25);
+}
+
+#article11  {
+	background-color: rgba(255,221,85,.2);
+}
+
+#article12 {
+	background-color: rgba(255,221,85,.15);
+}
+
+#article13 {
+	background-color: rgba(255,221,85,.1);
+}
+
+#article14 {
+	background-color: rgba(255,221,85,.05);
+}
+
+.news h1, .news p {
+	width: 100%;
+}
