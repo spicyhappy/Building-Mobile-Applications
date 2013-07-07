@@ -66,7 +66,7 @@ function getWeather(location,latitude,longitude) {
 		var todayTempMax = Math.round(components[0].temperatureMax);
 		var todayTempMin = Math.round(components[0].temperatureMin);
 
-		$('#weatherCurrent').html('Good day, '+location.slice(0,-4)+'!<div class="weatherToday"><div>'+components[0].icon+'</div><div>'+todayTempMin+'-'+todayTempMax+'&deg; F</div></div>');
+		$('#weatherCurrent').html('Good day, '+location.slice(0,-4)+'!<div class="weatherToday"><div>'+components[0].icon+'</div><div>'+todayTempMin+'-'+todayTempMax+'&deg;</div></div>');
 
 		for (var i=1; i<8; i++) {
 			if (components[i].temperatureMax && components[i].temperatureMin && components[i].time && components[i].icon) {
@@ -82,7 +82,7 @@ function getWeather(location,latitude,longitude) {
 				var day = timeStamp.getUTCDay();
 				var dayOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
-				$('#weatherFuture .day'+[i]).html('<div>'+dayOfWeek[day]+'</div><div>'+components[i].icon+'</div><div>'+tempMin+'-'+tempMax+'&deg; F');
+				$('#weatherFuture .day'+[i]).html('<div>'+dayOfWeek[day]+'</div><div>'+components[i].icon+'</div><div>'+tempMin+'-'+tempMax+'&deg;');
 			}
 		}
 	});

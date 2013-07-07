@@ -17,12 +17,7 @@ body {
 	text-shadow: 0 2px 2px rgba(0,0,0,0.2);
 }
 
-
-.shortcuts a:hover, #historyList:hover, .news article:hover, footer:hover {
-	cursor: pointer;
-}
-
-header form, #weatherCurrent, .news article, footer {
+header form, #weatherCurrent, .news article h1, footer {
 	padding: 2.5%;
 }
 
@@ -85,49 +80,26 @@ header h1{
 
 #weatherFuture {
 	background-color: rgba(255,221,85,.8);
-	clear: both;
-	overflow: auto;
+	float: left;
+	width: 100%;
+	background-image: -webkit-gradient(linear, left top, right top, color-stop(0, rgba(0,0,0, .025)), color-stop(14.2857%, rgba(0,0,0, .025)), color-stop(14.2857%, rgba(0,0,0, .05)), color-stop(28.5714%, rgba(0,0,0, .05)), color-stop(28.5714%, rgba(0,0,0, .075)), color-stop(42.8571%, rgba(0,0,0, .075)), color-stop(42.8571%, rgba(0,0,0, .1)), color-stop(57.1428%, rgba(0,0,0, .1)), color-stop(57.1428%, rgba(0,0,0, .125)), color-stop(71.4285%, rgba(0,0,0, .125)), color-stop(71.4285%, rgba(0,0,0, .15)), color-stop(85.7142%, rgba(0,0,0, .15)), color-stop(85.7142%, rgba(0,0,0, .175)), color-stop(100%, rgba(0,0,0, .175)) );
+	background-image: -moz-linear-gradient( left, rgba(0,0,0, .025), rgba(0,0,0, .025) 14.2857%, rgba(0,0,0, .05) 14.2857%, rgba(0,0,0, .05) 28.5714%, rgba(0,0,0, .075) 28.5714%, rgba(0,0,0, .075) 42.8571%, rgba(0,0,0, .1) 42.8571%, rgba(0,0,0, .1) 57.1428%, rgba(0,0,0, .125) 57.1428%, rgba(0,0,0, .125) 71.4285%, rgba(0,0,0, .15) 71.4285%, rgba(0,0,0, .15) 85.7142%, rgba(0,0,0, .175) 85.7142%, rgba(0,0,0, .175) 100% );
 }
 
 #weatherFuture li {
-/*	background-color: rgba(255,221,85,.8);*/
 	font-size: 0.75em;
 	text-align: center;
 	display: inline-block;
 	float: left;
 	width: 14.2857%;
 	padding: 2.5% 0;
+	height: 100%;
 	box-sizing: border-box; -webkit-box-sizing: border-box;
 }
 
-.day1 {
-	background-color: rgba(0,0,0, .025);
+.news {
+	clear: both;
 }
-
-.day2 {
-	background-color: rgba(0,0,0, .05);
-}
-
-.day3 {
-	background-color: rgba(0,0,0, .075);
-}
-
-.day4 {
-	background-color: rgba(0,0,0, .1);
-}
-
-.day5 {
-	background-color: rgba(0,0,0, .125);
-}
-
-.day6 {
-	background-color: rgba(0,0,0, .15);
-}
-
-.day7 {
-	background-color: rgba(0,0,0, .175);
-}
-
 
 #article1 {
 	background-color: rgba(255,221,85,.7);
@@ -184,6 +156,7 @@ header h1{
 	background-color: rgba(255,221,85,.05);
 }
 
-.news h1, .news p {
-	width: 100%;
+.shortcuts a:hover, #historyList li:hover, article h1:hover, footer:hover {
+	cursor: pointer;
+	background-color: rgba(0,0,0,.5);
 }
