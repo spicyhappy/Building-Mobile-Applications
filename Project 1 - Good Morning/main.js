@@ -55,11 +55,14 @@ function getNews(location) {
 	});
 }
 
-function getWeather(location) {
-	var url= "http://openweathermap.org/data/2.5/forecast/daily?q="+location+"&mode=json&cnt=8&APPID=3ed268108474effd9fa2a27a22584f00";
-	//https://api.forecast.io/forecast/e053334212f4dd449660bd61b61b29e2/37.8267,-122.423
+function getWeather(latitude,longitude) {
+	// // var url = "http://api.worldweatheronline.com/free/v1/weather.ashx?key=2qbjvhjdab5vs9fpxszg5jqv&q=94704&num_of_days=5&format=json&callback=?";
+	// // var url = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+location+"&mode=json&units=imperial&cnt=7&callback=?";
+	var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D'https%3A%2F%2Fapi.forecast.io%2Fforecast%2Fe053334212f4dd449660bd61b61b29e2%2F"+latitude+"%2C"+longitude+"'&format=json&diagnostics=true";
+	console.log(url);
 	$.getJSON(url, function(data){
-		console.log(url);
+		console.log(data);
+
 	});
 }
 
@@ -69,10 +72,10 @@ function getLocation(url) {
 			error('geolocation');
 			return;
 		}
-
 		var components = data.results[0].address_components;
-		for (var i=0; i<components.length; i++) {
+		var geolocation = data.results[0].geometry.location;
 
+		for (var i=0; i<components.length; i++) {
 			if(components[i].types.indexOf('locality') !== -1) {
 				var city = components[i].long_name;
 			}
@@ -87,20 +90,21 @@ function getLocation(url) {
 		}
 
 		var location = city + ', ' + state;
-		loadSearch(location);
+		var latitude = geolocation.lat;
+		var longitude = geolocation.lng;
+		loadSearch(location, latitude, longitude);
 	});
 }
 
-function loadSearch(location) {
+function loadSearch(location,latitude,longitude) {
 	// Takes 'city, state' and set up the page
-	console.log(location);
+	console.log(latitude+", "+longitude);
 	$('header .shortcuts').addClass('hide');
 	$('#locationSearch').blur();
 	clearPage();
 	
 	// Todo: move alert message to other functions to account for slow functions
-	alertMessage('Loading', false);
-	
+
 	$('#historyList li:contains("'+location+'")').remove();
 	$('#historyList').prepend('<li>'+location+'</li>');
 	$('#historyList li').slice(5).remove();
@@ -108,11 +112,10 @@ function loadSearch(location) {
 		var pastSearches = [];
 		$('#historyList li').each(function(){pastSearches.push($(this).text());});
 		localStorage.pastSearches = JSON.stringify(pastSearches);
-		console.log(localStorage.pastSearches);
 	}
 	var locationEncoded = encodeURIComponent(location.replace(/\s+/g, ''));
 	getNews(locationEncoded);
-	getWeather(locationEncoded);
+	getWeather(latitude,longitude);
 	//		update messages to new location
 	//		remove alert messages
 }
@@ -135,7 +138,8 @@ $(document).ready(function() {
 		for (var i=0; i<pastSearches.length; i++) {
 			$('#historyList').append('<li>'+pastSearches[i]+'</li>');
 		}
-		loadSearch(pastSearches[0]);
+		var url='http://maps.googleapis.com/maps/api/geocode/json?address='+pastSearches[0]+'&sensor=true';
+		getLocation(url);
 	}
 
 	// Setup shortcuts if there are any available
@@ -151,7 +155,8 @@ $(document).ready(function() {
 
 		$('#historyList li').click(function(){
 			var location = $(this).html();
-			loadSearch(location);
+			var url='http://maps.googleapis.com/maps/api/geocode/json?address='+location+'&sensor=true';
+			getLocation(url);
 		});
 	}
 
@@ -166,7 +171,6 @@ $(document).ready(function() {
 
 		var searchBox = encodeURIComponent(searchBox);
 		var url='http://maps.googleapis.com/maps/api/geocode/json?address='+searchBox+'&sensor=true';
-
 		getLocation(url);
 
 		return false;
