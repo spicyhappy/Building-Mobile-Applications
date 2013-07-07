@@ -9,13 +9,13 @@ function alertMessage(message, close) {
 function clearPage() {
 	// Wipes away previous data for a fresh start
 	$("#weatherCurrent .message").empty();
-	$("#weatherCurrent .sky").empty();
-	$("#weatherCurrent .temperature").empty();
+	$("#weatherCurrent").empty();
 	$("#weatherFuture li").empty();
 	$(".news article").empty();
 }
 
 function error(status) {
+	// Handles errors
 	switch(status) {
 		case 'geolocation':
 			console.log('try another address');
@@ -33,6 +33,7 @@ function error(status) {
 }
 
 function getNews(location) {
+	// Gets google news results from city name and displays it
 	var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%20%3D%20'http%3A%2F%2Fnews.google.com%2Fnews%3Fgeo%3D"+location+"%26output%3Drss%26num%3D20'&format=json&diagnostics=true";
 	// Todo: throw an error if timeout
 	$.getJSON(url, function(data){
@@ -55,18 +56,40 @@ function getNews(location) {
 	});
 }
 
-function getWeather(latitude,longitude) {
-	// // var url = "http://api.worldweatheronline.com/free/v1/weather.ashx?key=2qbjvhjdab5vs9fpxszg5jqv&q=94704&num_of_days=5&format=json&callback=?";
-	// // var url = "http://api.openweathermap.org/data/2.5/forecast/daily?q="+location+"&mode=json&units=imperial&cnt=7&callback=?";
+function getWeather(location,latitude,longitude) {
+	// Use Forecast.io to predict the temperation min/max and weather of next 7 days
 	var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20json%20where%20url%3D'https%3A%2F%2Fapi.forecast.io%2Fforecast%2Fe053334212f4dd449660bd61b61b29e2%2F"+latitude+"%2C"+longitude+"'&format=json&diagnostics=true";
-	console.log(url);
 	$.getJSON(url, function(data){
-		console.log(data);
+		// Todo: detect api failure
+		var components = data.query.results.json.daily.data;
 
+		var todayTempMax = Math.round(components[0].temperatureMax);
+		var todayTempMin = Math.round(components[0].temperatureMin);
+
+		$('#weatherCurrent').html('Good day, '+location.slice(0,-4)+'!<div class="weatherToday"><div>'+components[0].icon+'</div><div>'+todayTempMin+'-'+todayTempMax+'&deg; F</div></div>');
+
+		for (var i=1; i<8; i++) {
+			if (components[i].temperatureMax && components[i].temperatureMin && components[i].time && components[i].icon) {
+				// var temperatureMax[i] = components[i].temperatureMax;
+				// var temperatureMin[i] = components[i].temperatureMin;
+				// var weatherTime[i] = components[i].time;
+				// var weatherIcon[i] = components[i].icon;
+
+				var tempMax = Math.round(components[i].temperatureMax);
+				var tempMin = Math.round(components[i].temperatureMin);
+				var timeStamp = new Date(components[i].time*1000);
+
+				var day = timeStamp.getUTCDay();
+				var dayOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+				$('#weatherFuture .day'+[i]).html('<div>'+dayOfWeek[day]+'</div><div>'+components[i].icon+'</div><div>'+tempMin+'-'+tempMax+'&deg; F');
+			}
+		}
 	});
 }
 
 function getLocation(url) {
+	// Get city, state, and geographic coordinates and pass to loadSearch
 	$.getJSON(url, function(data){
 		if(data.status === 'ZERO_RESULTS') {
 			error('geolocation');
@@ -115,7 +138,7 @@ function loadSearch(location,latitude,longitude) {
 	}
 	var locationEncoded = encodeURIComponent(location.replace(/\s+/g, ''));
 	getNews(locationEncoded);
-	getWeather(latitude,longitude);
+	getWeather(location,latitude,longitude);
 	//		update messages to new location
 	//		remove alert messages
 }

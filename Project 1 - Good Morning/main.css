@@ -40,7 +40,7 @@ ol, ul {
 	list-style: none;
 }
 
-header form {
+header form, .shortcuts {
 	background-color: rgb(255,221,85);
 }
 
@@ -52,7 +52,7 @@ header h1{
 #historyList li, .shortcuts a {
 	padding: 1% 2.5%;
 	display: block;
-	background-color: rgba(0,0,0, .2);
+	background-color: rgba(0,0,0, .15);
 	border-left: 8px solid rgb(255,221,85);
 	border-right: 8px solid rgb(255,221,85);
 }
@@ -67,13 +67,26 @@ header h1{
 
 #weatherCurrent {
 	background-color: rgba(255,221,85,.9);
+	clear: both;
+	overflow: auto;
+}
+
+#weatherCurrent .weatherToday {
+	display: inline-block;
+	background-color: rgba(0,0,0, .05);
+	float: left;
+	width: 40%;
+	text-align: center;
+	padding: 2.5% 0;
+	margin-right: 2.5%;
+	box-sizing: border-box; -webkit-box-sizing: border-box;
+
 }
 
 #weatherFuture {
 	background-color: rgba(255,221,85,.8);
 	clear: both;
 	overflow: auto;
-	width: 100%;
 }
 
 #weatherFuture li {
@@ -86,6 +99,35 @@ header h1{
 	padding: 2.5% 0;
 	box-sizing: border-box; -webkit-box-sizing: border-box;
 }
+
+.day1 {
+	background-color: rgba(0,0,0, .025);
+}
+
+.day2 {
+	background-color: rgba(0,0,0, .05);
+}
+
+.day3 {
+	background-color: rgba(0,0,0, .075);
+}
+
+.day4 {
+	background-color: rgba(0,0,0, .1);
+}
+
+.day5 {
+	background-color: rgba(0,0,0, .125);
+}
+
+.day6 {
+	background-color: rgba(0,0,0, .15);
+}
+
+.day7 {
+	background-color: rgba(0,0,0, .175);
+}
+
 
 #article1 {
 	background-color: rgba(255,221,85,.7);
