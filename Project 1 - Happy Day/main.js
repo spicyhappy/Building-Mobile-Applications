@@ -6,6 +6,14 @@ function clearPage() {
 	$(".news article").empty();
 }
 
+function colorizePage(temperature) {
+	var r = Math.round((255*temperature)/100);
+	var g = Math.round((150*(100-temperature))/100); 
+	var b = Math.round((255*(100-temperature))/100); 
+	$('body').css("background-color","rgb("+r+","+g+","+b+")");
+
+}
+
 function message(status) {
 	// Handles error and status messages
 	switch(status) {
@@ -25,6 +33,8 @@ function message(status) {
 }
 
 function geolocationDeny() {
+	// Displays a message so the user does not see a blank screen.
+
 	$('#weatherCurrent').html("Hello! Use Happy Day to look up your local news and weather.");
 }
 
@@ -43,7 +53,7 @@ function getNews(location) {
 				var article = data.query.results.item[i];
 				var articleSection = '#article'+(i+1);
 				if(typeof article.title !== 'undefined' && typeof article.link !== 'undefined') {
-					$(articleSection).append('<h1><a href="'+article.link+'">'+article.title+'</a></h1>');
+					$(articleSection).append('<a href="'+article.link+'"><h1>'+article.title+'</h1></a>');
 				}
 				else {
 					message('no news articles');
@@ -63,6 +73,9 @@ function getWeather(location,latitude,longitude) {
 
 		var todayTempMax = Math.round(components[0].temperatureMax);
 		var todayTempMin = Math.round(components[0].temperatureMin);
+		var todayTemp = (todayTempMax+todayTempMin)/2;
+
+		colorizePage(todayTemp);
 
 		$('#weatherCurrent').html('<div class="weatherToday"><div>'+components[0].icon+'</div><div>'+todayTempMin+'-'+todayTempMax+'&deg;</div></div>Good day,<br>'+location.slice(0,-4)+'!');
 
@@ -151,12 +164,7 @@ function setPosition(position) {
 
 $(document).ready(function() {
 
-	// Setup variables
-	var historySaved = 5;
-	var numberArticles = 14;
-	var daysForecasted = 8; // Includes current day
-
-	// Look up current location and pass to loadSearch. If denied, load welcome message
+	// Look up current location and pass to loadSearch. If denied, load welcome message.
 	navigator.geolocation.getCurrentPosition(setPosition, geolocationDeny);
 
 	// Load last 5 searches and search for the most recent search
@@ -166,12 +174,7 @@ $(document).ready(function() {
 		for (var i=0; i<pastSearches.length; i++) {
 			$('#historyList').append('<li>'+pastSearches[i]+'</li>');
 		}
-
-		// Load up previous search if geolocation is not available or has been denied
-		// var url='http://maps.googleapis.com/maps/api/geocode/json?address='+pastSearches[0]+'&sensor=true';
-		// getLocation(url);
 	}
-
 
 	// Setup shortcuts if there are any available
 	if (navigator.geolocation || $('#historyList') !== '') {
