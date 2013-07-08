@@ -125,7 +125,7 @@ header h1{
 	float: left;
 	width: 14.2857%;
 	padding: 2.5% 0;
-	height: 100%;
+	border-bottom: 5px solid rgba(255,221,85, .2);
 	box-sizing: border-box; -webkit-box-sizing: border-box;
 }
 

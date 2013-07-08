@@ -42,7 +42,7 @@ function geolocationDeny() {
 function getNews(location) {
 	// Use Google News to display most recent news results from city
 
-	var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%20%3D%20'http%3A%2F%2Fnews.google.com%2Fnews%3Fgeo%3D"+location+"%26output%3Drss%26num%3D20'&format=json&diagnostics=true";
+	var url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20rss%20where%20url%20%3D%20'http%3A%2F%2Fnews.google.com%2Fnews%3Fq%3D"+location+"%26output%3Drss%26num%3D20'&format=json&diagnostics=true";
 	// Todo: throw an error if timeout
 	$.getJSON(url, function(data){
 		if (data.query.results === null) {
@@ -137,7 +137,6 @@ function loadSearch(location,latitude,longitude) {
 	$('#locationSearch').blur();
 	clearPage();
 	saveHistory(location);
-
 	var locationEncoded = encodeURIComponent(location.replace(/\s+/g, ''));
 	getNews(locationEncoded);
 	getWeather(location,latitude,longitude);
@@ -154,6 +153,14 @@ function saveHistory(location) {
 		$('#historyList li').each(function(){pastSearches.push($(this).text());});
 		localStorage.pastSearches = JSON.stringify(pastSearches);
 	}
+
+	// Readd click handlers for new elements
+	$('#historyList li').unbind();
+	$('#historyList li').click(function(){
+			var location = $(this).html();
+			var url='http://maps.googleapis.com/maps/api/geocode/json?address='+location+'&sensor=true';
+			getLocation(url);
+		});
 }
 
 function setPosition(position) {
@@ -197,9 +204,10 @@ $(document).ready(function() {
 		});
 	}
 
-	// $('#locationSearch').focus(function() {
-	// 	$('#locationSearch').val('Hi');
-	// });
+	// Reset input on focus
+	$('#locationSearch').focus(function() {
+		$('#locationSearch').val('');
+	});
 
 	// Take user value and turn into city + state, and pass to loadSearch
 	$('header form').on('submit', function(){
