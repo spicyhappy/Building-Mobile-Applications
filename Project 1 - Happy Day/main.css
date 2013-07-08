@@ -16,6 +16,24 @@ body {
 	font-size: 0.875em;
 }
 
+form {
+	position: relative;
+}
+
+.alert {
+	position: fixed;
+	width: 75%;
+	left: 50%;
+	top: 45%;
+	padding: 20px 0;
+	margin: 0 0 0 -37.5%;
+	font-weight: bold;
+	font-size: 18px;
+	text-align: center;
+	background-color: rgba(0,0,0,.65);
+	z-index: 9999;
+}
+
 #weatherFuture li, #weatherCurrent .weatherToday {
 	text-transform: uppercase;
 }
