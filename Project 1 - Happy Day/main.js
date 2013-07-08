@@ -6,11 +6,12 @@ function clearPage() {
 	$(".news article").empty();
 }
 
-function colorizePage(temperature) {
+function colorize(temperature, opacity) {
 	var r = Math.round((255*temperature)/100);
 	var g = Math.round((150*(100-temperature))/100); 
-	var b = Math.round((255*(100-temperature))/100); 
-	$('body').css("background-color","rgb("+r+","+g+","+b+")");
+	var b = Math.round((255*(100-temperature))/100);
+	var color = "rgba("+r+","+g+","+b+","+opacity+")";
+	return color;
 
 }
 
@@ -70,26 +71,28 @@ function getWeather(location,latitude,longitude) {
 	$.getJSON(url, function(data){
 		// Todo: detect api failure
 		var components = data.query.results.json.daily.data;
-
 		var todayTempMax = Math.round(components[0].temperatureMax);
 		var todayTempMin = Math.round(components[0].temperatureMin);
-		var todayTemp = (todayTempMax+todayTempMin)/2;
-
-		colorizePage(todayTemp);
+		var tempAvg = (todayTempMax+todayTempMin)/2;
 
 		$('#weatherCurrent').html('<div class="weatherToday"><div>'+components[0].icon+'</div><div>'+todayTempMin+'-'+todayTempMax+'&deg;</div></div>Good day,<br>'+location.slice(0,-4)+'!');
+		
+		// Colorize background
+		$("body").css("background-color",colorize(tempAvg,1));
+		$('.weatherToday').css("background-color",colorize(tempAvg, .5));
 
 		for (var i=1; i<8; i++) {
 			if (components[i].temperatureMax && components[i].temperatureMin && components[i].time && components[i].icon) {
 
 				var tempMax = Math.round(components[i].temperatureMax);
 				var tempMin = Math.round(components[i].temperatureMin);
+				var tempAvg = (tempMax+tempMin)/2;
 				var timeStamp = new Date(components[i].time*1000);
-
 				var day = timeStamp.getUTCDay();
 				var dayOfWeek = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 				$('#weatherFuture .day'+[i]).html('<div>'+dayOfWeek[day]+'</div><div>'+components[i].icon+'</div><div>'+tempMin+'-'+tempMax+'&deg;');
+				$('#weatherFuture .day'+[i]).css("background-color",colorize(tempAvg,.5));
 			}
 		}
 	});
