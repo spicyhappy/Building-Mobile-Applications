@@ -75,7 +75,7 @@ function getWeather(location,latitude,longitude) {
 		var todayTempMin = Math.round(components[0].temperatureMin);
 		var tempAvg = (todayTempMax+todayTempMin)/2;
 
-		$('#weatherCurrent').html('<div class="weatherToday"><div>'+components[0].icon+'</div><div>'+todayTempMin+'-'+todayTempMax+'&deg;</div></div>Good day,<br>'+location.slice(0,-4)+'!');
+		$('#weatherCurrent').html('<div class="weatherToday"><div>'+components[0].icon+'</div><div>'+todayTempMin+'-'+todayTempMax+'&deg;</div></div>Good day,<br>'+location.slice(0, location.indexOf(","))+'!');
 		
 		// Colorize background
 		$("body").css("background-color",colorize(tempAvg,1));
@@ -196,6 +196,10 @@ $(document).ready(function() {
 			getLocation(url);
 		});
 	}
+
+	// $('#locationSearch').focus(function() {
+	// 	$('#locationSearch').val('Hi');
+	// });
 
 	// Take user value and turn into city + state, and pass to loadSearch
 	$('header form').on('submit', function(){

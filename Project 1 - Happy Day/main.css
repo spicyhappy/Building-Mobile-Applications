@@ -194,6 +194,7 @@ header h1{
 
 footer {
 	font-weight: 700;
+	padding-bottom: 30px;
 }
 
 input[type=submit]:hover, .shortcuts a:hover, #historyList li:hover, article h1:hover, footer:hover {
