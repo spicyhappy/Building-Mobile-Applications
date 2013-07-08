@@ -24,6 +24,10 @@ function message(status) {
 	}
 }
 
+function geolocationDeny() {
+	$('#weatherCurrent').html("Hello! Use Happy Day to look up your local news and weather.");
+}
+
 function getNews(location) {
 	// Use Google News to display most recent news results from city
 
@@ -152,10 +156,8 @@ $(document).ready(function() {
 	var numberArticles = 14;
 	var daysForecasted = 8; // Includes current day
 
-	// Welcome first time user
-	if (typeof localStorage.pastSearches === 'undefined') {
-		$('#weatherCurrent').html("Hello! Use Happy Day to look up your local news and weather.");
-	}	
+	// Look up current location and pass to loadSearch. If denied, load welcome message
+	navigator.geolocation.getCurrentPosition(setPosition, geolocationDeny);
 
 	// Load last 5 searches and search for the most recent search
 	if (typeof localStorage.pastSearches !== 'undefined') {
@@ -164,9 +166,12 @@ $(document).ready(function() {
 		for (var i=0; i<pastSearches.length; i++) {
 			$('#historyList').append('<li>'+pastSearches[i]+'</li>');
 		}
-		var url='http://maps.googleapis.com/maps/api/geocode/json?address='+pastSearches[0]+'&sensor=true';
-		getLocation(url);
+
+		// Load up previous search if geolocation is not available or has been denied
+		// var url='http://maps.googleapis.com/maps/api/geocode/json?address='+pastSearches[0]+'&sensor=true';
+		// getLocation(url);
 	}
+
 
 	// Setup shortcuts if there are any available
 	if (navigator.geolocation || $('#historyList') !== '') {
