@@ -1,5 +1,5 @@
 /* CSS reset */
-html, body, div, span, h1, h2, p, a, img, ul, ol, li, form, label, article, footer, header, section {
+html, body, div, span, h1, h2, p, a, img, ul, ol, li, form, input, label, article, footer, header, section {
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -12,12 +12,15 @@ body {
 	background-color: rgb(237,28,36);
 	color: #FFFFFF;
 	line-height: 1.2;
-	font-family: “Helvetica Neue”, Arial, sans-serif;
+	font-family: "Lato", “Helvetica Neue”, Arial, sans-serif;
 	font-size: 0.875em;
-	text-shadow: 0 2px 2px rgba(0,0,0,0.2);
 }
 
-header form, #weatherCurrent, .news article h1, footer {
+#weatherFuture li, #weatherCurrent .weatherToday {
+	text-transform: uppercase;
+}
+
+header form, #weatherCurrent, .news article header1, footer {
 	padding: 2.5%;
 }
 
@@ -27,16 +30,45 @@ a, a:visited {
 	-webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
-button, input {
-	-webkit-tap-highlight-color:rgba(0,0,0,0);
-}
-
 ol, ul {
 	list-style: none;
 }
 
-header form, .shortcuts {
+form input {
+	padding: 0 2%;
+	height: 40px;
+	margin-bottom: 1%;
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	-webkit-appearance: none;
+    border-radius: 0;
+    box-sizing: border-box; -webkit-box-sizing: border-box;
+    display: inline-block;
+}
+
+#locationSearch {
+	width: 79%;
+	color: #333;
+	float: left;
+	border: 2px solid #FFFFFF;
+}
+
+input[type=submit] {
+	width: 20%;
+	color: #FFFFFF;
+	float: right;
+	background-color: rgba(14,191,233,.8);
+	outline: 
+}
+
+#locationSearch:focus {
+	outline: none;
+	border: 2px solid rgb(14,191,233);
+}
+
+header {
 	background-color: rgb(255,221,85);
+	overflow: auto;
+	padding-bottom: 2.5%;
 }
 
 header h1{
@@ -44,16 +76,15 @@ header h1{
 	display: inline-block;
 }
 
+.shortcuts {
+	padding: 0 2.5%;
+	clear: both;
+}
+
 #historyList li, .shortcuts a {
 	padding: 1% 2.5%;
 	display: block;
 	background-color: rgba(0,0,0, .15);
-	border-left: 8px solid rgb(255,221,85);
-	border-right: 8px solid rgb(255,221,85);
-}
-
-.shortcuts .close {
-	border-bottom: 8px solid rgb(255,221,85);
 }
 
 .hide {
@@ -62,8 +93,9 @@ header h1{
 
 #weatherCurrent {
 	background-color: rgba(255,221,85,.9);
-	clear: both;
 	overflow: auto;
+	font-size: 18px;
+	font-weight: bold;
 }
 
 #weatherCurrent .weatherToday {
@@ -99,6 +131,10 @@ header h1{
 
 .news {
 	clear: both;
+}
+
+.news h1 {
+	padding: 2.5%;
 }
 
 #article1 {
@@ -156,7 +192,11 @@ header h1{
 	background-color: rgba(255,221,85,.05);
 }
 
-.shortcuts a:hover, #historyList li:hover, article h1:hover, footer:hover {
+footer a {
+	font-weight: 700;
+}
+
+input[type=submit]:hover, .shortcuts a:hover, #historyList li:hover, article h1:hover, footer:hover {
 	cursor: pointer;
 	background-color: rgba(0,0,0,.5);
 }

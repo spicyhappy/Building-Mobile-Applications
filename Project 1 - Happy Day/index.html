@@ -7,9 +7,9 @@
 	<meta name="description" content="Happy Day is a web app that lets you look at weather and local news at a glance.">
 	<meta author="author" content="Xin Xin">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+	 <meta name="apple-touch-fullscreen" content="yes" />
 	<title>Happy Day</title>
-	<script type="text/javascript" src="jquery.min.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Lato:400,900' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="main.css">
 	<link rel="apple-touch-icon-precomposed" href="img/apple-icon.png" />
 	<link rel="apple-touch-startup-image" href="img/apple-startup.png" />
@@ -18,8 +18,7 @@
 <body>
 	<header>
 		<form>
-            <input type="search" id="locationSearch" placeholder="City + State or Zip">
-            <input type="submit" value="Search">
+            <input id="locationSearch" placeholder="City + State or Zip"><input type="submit" value="Search">
         </form>
         <div class="shortcuts hide">
         	<ul id="historyList">
@@ -34,7 +33,6 @@
 	</header>
 	<section class="weather">
 		<div id="weatherCurrent">
-			<span class="message">Hello! Use Happy Day to look up your local news and weather.</span><span class="sky"></span><span class="temperature"></span>
 		</div>
 		<ol id="weatherFuture">
 			<li class="day1"></li>
@@ -66,6 +64,7 @@
 	</section>
 
 	<footer><a href="http://xin-squared.com">Made by Xin Xin</a></footer>
+	<script type="text/javascript" src="jquery.min.js"></script>
 	<script type="text/javascript" src="main.js"></script>
 </body>
 </html>
