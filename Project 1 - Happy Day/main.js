@@ -10,7 +10,7 @@ function clearPage() {
 function colorize(temperature, opacity) {
 	// Returns color value for a given temperature
 
-	temperature = Math.max(0, Math.min(temperature, 100));
+	var temperature = Math.max(0, Math.min(temperature, 100));
 	var r = Math.round((255*temperature)/100);
 	var g = Math.round((150*(100-temperature))/100); 
 	var b = Math.round((255*(100-temperature))/100);
@@ -19,19 +19,23 @@ function colorize(temperature, opacity) {
 }
 
 function message(status, disappear) {
+	// Serves up a message popup with a optional disappearing parameter
+
 	$('.alert').html(status);
 	$('.alert').removeClass('hide');
 	if (disappear) {
 		setTimeout(function() {
         	$('.alert').addClass('hide');
-		}, 2000);
+		}, 3000);
 	}
 }
 
 function geolocationDenied() {
 	// Displays a message so the user does not see a blank screen.
 
+	$('.alert').addClass('hide');
 	$('#weatherCurrent').html("Hello! Use Happy Day to look up your local news and weather.");
+	$('#getLocation').remove();
 }
 
 function getNews(location) {
@@ -42,15 +46,27 @@ function getNews(location) {
 		if (data.query.results === null) {
 			return;
 		}
+
 		else {
 			for (var i=0; i<14; i++) {
+				// In case there is no news
+				if (!data.query.results.item[i]) {
+					return;
+				}
 				var article = data.query.results.item[i];
 				var articleSection = '#article'+(i+1);
-				if(typeof article.title !== 'undefined' && typeof article.link !== 'undefined') {
+
+				if(article.title && article.link) {
+					if (article.title.length > 200) {
+						article.title = article.title.substring(0, 200)+"...";
+					}
 					$(articleSection).append('<a href="'+article.link+'"><h1>'+article.title+'</h1></a>');
 				}
 			}
 		}
+	}).error(function(data){
+		message("Connection seems down, sorry!");
+		return;
 	});
 }
 
@@ -92,43 +108,52 @@ function getWeather(location,latitude,longitude) {
 				}
 			}
 		}
+	}).error(function(data){
+		message("Connection seems down, sorry!");
+		return;
 	});
 }
 
 function getLocation(url) {
 	// Get location data and pass to loadSearch
-
 	$.getJSON(url, function(data){
 		if(data.status === 'ZERO_RESULTS') {
-			message("We couldn't find that city or zip. Please try again!");
-			return;
-		}
-		var components = data.results[0].address_components;
-		var geolocation = data.results[0].geometry.location;
-
-		for (var i=0; i<components.length; i++) {
-			if(components[i].types.indexOf('locality') !== -1) {
-				var city = components[i].long_name;
-			}
-			if(components[i].types.indexOf('administrative_area_level_1') !== -1) {
-				var state = components[i].short_name;
-			}
-		}
-
-		if (typeof city === 'undefined' || state === 'undefined') {
-			message("We couldn't find that city or zip. Please try again!", true);
+			message("We couldn't find that city or zip.", true);
 			return;
 		}
 
-		var location = city + ', ' + state;
-		var latitude = geolocation.lat;
-		var longitude = geolocation.lng;
-		loadSearch(location, latitude, longitude);
+		else {
+			var components = data.results[0].address_components;
+			var geolocation = data.results[0].geometry.location;
+
+			for (var i=0; i<components.length; i++) {
+				if(components[i].types.indexOf('locality') !== -1) {
+					var city = components[i].long_name;
+				}
+				if(components[i].types.indexOf('administrative_area_level_1') !== -1) {
+					var state = components[i].short_name;
+				}
+			}
+
+			if (typeof city === 'undefined' || state === 'undefined') {
+				message("Cities only, please!", true);
+				return;
+			}
+
+			var location = city + ', ' + state;
+			var latitude = geolocation.lat;
+			var longitude = geolocation.lng;
+			loadSearch(location, latitude, longitude);
+		}
+	}).error(function(data){
+		message("Connection seems down, sorry!");
+		return;
 	});
 }
 
 function loadSearch(location,latitude,longitude) {
-	// Set up the page for a new search
+	// Set up the page for a search
+
 	$('#locationSearch').val(location);
 	$('header .shortcuts').addClass('hide');
 	$('#locationSearch').blur();
@@ -171,10 +196,15 @@ function setPosition(position) {
 }
 
 $(document).ready(function() {
-
-	// Look up current location and pass to loadSearch. If denied, load welcome message.
-	message("Loading...");
-	navigator.geolocation.getCurrentPosition(setPosition, geolocationDenied);
+	// Check to see if you're online
+	if (window.navigator.onLine) {
+		message("Loading...");
+		// Look up current location and pass to loadSearch. If denied, load welcome message.
+		navigator.geolocation.getCurrentPosition(setPosition, geolocationDenied);
+	}
+	else {
+		message("No internet connection,");
+	}
 
 	// Load last 5 searches and search for the most recent search
 	if (typeof localStorage.pastSearches !== 'undefined') {
@@ -227,5 +257,8 @@ $(document).ready(function() {
 }); // End $(document).ready
 
 $(document).ajaxStop(function() {
-      $('.alert').addClass('hide');
+	// Hide loading messages when ajax calls are finished
+	if ($('.alert').html() === "Loading...") {
+		$('.alert').addClass('hide');
+	}
 });
